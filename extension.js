@@ -1,36 +1,65 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-const vscode = require('vscode');
+// @ts-nocheck
+/* eslint-disable no-unused-vars */
+const vscode = require('vscode')
+const clipboardy = require('clipboardy')
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+//Set error view
+const showError = message =>
+    vscode.window.showErrorMessage(`Copy filename: ${message}`)
+const showWarning = message =>
+    vscode.window.setStatusBarMessage(`${message}`, 3000)
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+    console.log(
+        'Congratulations, your extension "Type Check This Javascript" is now active!'
+    )
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "typecheckthisjavascript" is now active!');
+    // The command has been defined in the package.json file
+    // Now provide the implementation of the command with  registerCommand
+    // The commandId parameter must match the command field in package.json
+    let disposable = vscode.commands.registerCommand(
+        'extension.typeCheckThisJavascript',
+        // 'typecheckthisjavascript.helloWorld',
+        function (uri, files) {
+            let accumulator = ''
+			// let str = ''
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('typecheckthisjavascript.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
+            if (typeof files !== 'undefined' && files.length > 0) {
+                files.forEach((el, index) => {
+                    //get the relative url, parse it and take the last part
+                    let url = vscode.workspace.asRelativePath(el.path)
+					// str = url
+                    let urlFormatted = url.replace(/\\/g, '/')
+                    accumulator += urlFormatted.split('/').pop()
+                    accumulator += index == files.length - 1 ? '' : '\n'
+                })
+            } else if (uri) {
+                let url = vscode.workspace.asRelativePath(uri)
+				// str = url
+                let urlFormatted = url.replace(/\\/g, '/')
+                accumulator += urlFormatted.split('/').pop()
+            }
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from typeCheckThisJavascript!');
-	});
+            //Copy the last part to clipboard
+            clipboardy
+                .write(accumulator)
+                .then(showWarning('Filename/s has been copied to clipboard'))
 
-	context.subscriptions.push(disposable);
+            // Display a message box to the user
+            vscode.window.showInformationMessage(`Result: ${accumulator}`)
+        }
+    )
+
+    context.subscriptions.push(disposable)
 }
 
 // this method is called when your extension is deactivated
 function deactivate() {}
 
 module.exports = {
-	activate,
-	deactivate
+    activate,
+    deactivate,
 }
