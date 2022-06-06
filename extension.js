@@ -25,18 +25,20 @@ function activate(context) {
         // 'typecheckthisjavascript.helloWorld',
         function (uri, files) {
             let accumulator = ''
-			let url = ''
+			let path = ''
 
             if (typeof files !== 'undefined' && files.length > 0) {
                 files.forEach((el, index) => {
                     //get the relative url, parse it and take the last part
-                    url = vscode.workspace.asRelativePath(el.path)
+                    let url = vscode.workspace.asRelativePath(el.path)
+					path = url.replace('.js', '')
                     let urlFormatted = url.replace(/\\/g, '/')
                     accumulator += urlFormatted.split('/').pop()
                     accumulator += index == files.length - 1 ? '' : '\n'
                 })
             } else if (uri) {
-                url = vscode.workspace.asRelativePath(uri)
+                let url = vscode.workspace.asRelativePath(uri)
+				path = url.replace('.js', '')
                 let urlFormatted = url.replace(/\\/g, '/')
                 accumulator += urlFormatted.split('/').pop()
             }
@@ -47,7 +49,7 @@ function activate(context) {
                 .then(showWarning('Filename/s has been copied to clipboard'))
 
             // Display a message box to the user
-            vscode.window.showInformationMessage(`Result: ${url}`)
+            vscode.window.showInformationMessage(`PATH: ${path}`)
         }
     )
 

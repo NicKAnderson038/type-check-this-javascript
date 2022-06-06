@@ -3,7 +3,7 @@
     "displayName": "Type Check This Javascript",
     "description": "Auto generate Type-Checking for Javascript script files",
     "publisher": "Nick7Anderson",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "engines": {
         "vscode": "^1.67.0"
     },
