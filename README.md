@@ -1,4 +1,4 @@
-# typecheckthisjavascript README
+# Type Check This Javascript README
 
 This is the README for your extension "typecheckthisjavascript". After writing up a brief description, we recommend including the following sections.
 
