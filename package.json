@@ -9,6 +9,11 @@
     "categories": [
         "Other"
     ],
+    "icon": "images/factory.png",
+    "galleryBanner": {
+        "color": "##3178C6",
+        "theme": "dark"
+    },
     "activationEvents": [
         "onCommand:extension.typeCheckThisJavascript"
     ],
