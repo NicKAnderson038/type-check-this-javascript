@@ -57,5 +57,6 @@
     },
     "dependencies": {
         "clipboardy": "^2.3.0"
-    }
+    },
+    "repository": "https://github.com/NicKAnderson038/type-check-this-javascript"
 }
